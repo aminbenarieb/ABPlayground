@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>math.js | plot</title>
+  <script src="https://unpkg.com/mathjs@6.2.5/dist/math.min.js"></script>
+
+  <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
+
+  <style>
+    input[type=text] {
+      width: 300px;
+    }
+    input {
+      padding: 6px;
+    }
+    body, html, input {
+      font-family: sans-serif;
+      font-size: 11pt;
+
+    }
+    form {
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="plot"></div>
+
+<script>
+  function draw(xValues, yValues) {
+    try {
+      // render the plot using plotly
+      const trace1 = {
+        x: xValues,
+        y: yValues,
+        type: 'scatter'
+      }
+      const data = [trace1]
+      Plotly.newPlot('plot', data)
+    }
+    catch (err) {
+      console.error(err)
+      alert(err)
+    }
+  }
+
+    function setupWKWebViewJavascriptBridge(callback) {
+        if (window.WKWebViewJavascriptBridge) { return callback(WKWebViewJavascriptBridge); }
+        if (window.WKWVJBCallbacks) { return window.WKWVJBCallbacks.push(callback); }
+        window.WKWVJBCallbacks = [callback];
+        window.webkit.messageHandlers.iOS_Native_InjectJavascript.postMessage(null)
+    }
+
+    setupWKWebViewJavascriptBridge(function(bridge) {
+        /* Initialize your app here */
+        bridge.registerHandler('testJavascriptHandler', function(data, responseCallback) {
+                               const input = data["input"]
+                               const expr = math.compile(input)
+
+                               // evaluate the expression repeatedly for different values of x
+                               const xValues = math.range(-10, 10, 0.5).toArray()
+                               const yValues = xValues.map(function (x) {
+                                 return expr.evaluate({x: x})
+                               })
+                               draw(xValues, yValues)
+            responseCallback({ 'Javascript Says':'Right back atcha!' })
+        })
+    })
+
+  draw()
+</script>
+
+</body>
+</html>
