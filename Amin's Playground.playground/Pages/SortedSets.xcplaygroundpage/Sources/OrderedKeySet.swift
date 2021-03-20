@@ -12,34 +12,35 @@ public struct OrderedKeyArray<Key: Comparable, Element: Hashable & Equatable> {
     }
 
     public func forEach(_ body: (Element) -> Void) {
-        storage.forEach { body($0 as! Element) }
+        self.storage.forEach { body($0 as! Element) }
     }
 
     public func contains(_ element: Element) -> Bool {
-        return index(of: element) != nil
+        return self.index(of: element) != nil
     }
 
     public func index(of element: Element) -> Int? {
-        let index = storage.index(
+        let index = self.storage.index(
             of: element,
-            inSortedRange: NSRange(0 ..< storage.count),
-            usingComparator: self.compareElement)
+            inSortedRange: NSRange(0..<self.storage.count),
+            usingComparator: self.compareElement
+        )
         return index == NSNotFound ? nil : index
     }
 
     public func bisect_key_left(key: Key) -> Int {
-        return storage.index(
+        return self.storage.index(
             of: key,
-            inSortedRange: NSRange(0 ..< storage.count),
+            inSortedRange: NSRange(0..<self.storage.count),
             options: [.insertionIndex, .firstEqual],
             usingComparator: self.compareElementAndKey
         )
     }
 
     public func bisect_key_right(key: Key) -> Int {
-        return storage.index(
+        return self.storage.index(
             of: key,
-            inSortedRange: NSRange(0 ..< storage.count),
+            inSortedRange: NSRange(0..<self.storage.count),
             options: [.insertionIndex, .lastEqual],
             usingComparator: self.compareElementAndKey
         )
@@ -47,7 +48,7 @@ public struct OrderedKeyArray<Key: Comparable, Element: Hashable & Equatable> {
 
     fileprivate func compareElementAndKey(_ a: Any, _ b: Any) -> ComparisonResult {
         func anyToKey(_ object: Any) -> Key {
-            return (object as? Key) ?? elementToKey(object as! Element)
+            return (object as? Key) ?? self.elementToKey(object as! Element)
         }
         let a = anyToKey(a), b = anyToKey(b)
         if a < b { return .orderedAscending }
@@ -55,17 +56,15 @@ public struct OrderedKeyArray<Key: Comparable, Element: Hashable & Equatable> {
         return .orderedSame
     }
 
-    fileprivate func compareKey(_ a: Any, _ b: Any) -> ComparisonResult
-    {
+    fileprivate func compareKey(_ a: Any, _ b: Any) -> ComparisonResult {
         let a = a as! Key, b = b as! Key
         if a < b { return .orderedAscending }
         if a > b { return .orderedDescending }
         return .orderedSame
     }
 
-    fileprivate func compareElement(_ a: Any, _ b: Any) -> ComparisonResult
-    {
-        let a = elementToKey(a as! Element), b = elementToKey(b as! Element)
+    fileprivate func compareElement(_ a: Any, _ b: Any) -> ComparisonResult {
+        let a = self.elementToKey(a as! Element), b = self.elementToKey(b as! Element)
         if a < b { return .orderedAscending }
         if a > b { return .orderedDescending }
         return .orderedSame
@@ -79,7 +78,7 @@ extension OrderedKeyArray {
         // so generated private nsobject class
         // would have some hashing / equality
         // implementations
-        return storage.contains(element) || index(of: element) != nil
+        return self.storage.contains(element) || self.index(of: element) != nil
     }
 }
 
@@ -88,20 +87,21 @@ extension OrderedKeyArray: RandomAccessCollection {
     public typealias Indices = CountableRange<Int>
 
     public var startIndex: Int { return 0 }
-    public var endIndex: Int { return storage.count }
-    public subscript(i: Int) -> Element { return storage[i] as! Element }
+    public var endIndex: Int { return self.storage.count }
+    public subscript(i: Int) -> Element { return self.storage[i] as! Element }
 }
 
 extension OrderedKeyArray {
     @discardableResult
-    public mutating func insert(_ newElement: Element) -> (inserted: Bool, memberAfterInsert: Element)
+    public mutating func insert(_ newElement: Element)
+        -> (inserted: Bool, memberAfterInsert: Element)
     {
         let index = self.index(for: newElement)
 //        if index < storage.count, storage[index] as! Element == newElement {
 //            return (false, storage[index] as! Element)
 //        }
-        makeUnique()
-        storage.insert(newElement, at: index)
+        self.makeUnique()
+        self.storage.insert(newElement, at: index)
         return (true, newElement)
     }
 
@@ -109,24 +109,25 @@ extension OrderedKeyArray {
         guard let index = self.index(of: element) else {
             return false
         }
-        makeUnique()
-        storage.removeObject(at: index)
+        self.makeUnique()
+        self.storage.removeObject(at: index)
         return true
     }
 
     fileprivate func index(for value: Element) -> Int {
-        return storage.index(
+        return self.storage.index(
             of: value,
-            inSortedRange: NSRange(0 ..< storage.count),
+            inSortedRange: NSRange(0..<self.storage.count),
             options: .insertionIndex,
-            usingComparator: self.compareElement)
+            usingComparator: self.compareElement
+        )
     }
 
     fileprivate mutating func makeUnique() {
-        print("isKnownUniquelyReferenced: \(isKnownUniquelyReferenced(&canary))")
-        if !isKnownUniquelyReferenced(&canary) {
-            storage = storage.mutableCopy() as! NSMutableArray
-            canary = Canary()
+        print("isKnownUniquelyReferenced: \(isKnownUniquelyReferenced(&self.canary))")
+        if !isKnownUniquelyReferenced(&self.canary) {
+            self.storage = self.storage.mutableCopy() as! NSMutableArray
+            self.canary = Canary()
         }
     }
 }

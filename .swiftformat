@@ -1,0 +1,133 @@
+--disable enumNamespaces
+--disable extensionAccessControl
+
+# spaces
+--enable spaceAroundBraces
+--enable spaceAroundBrackets
+--enable spaceAroundComments
+--enable spaceAroundGenerics
+--operatorfunc spaced
+--ranges spaced
+--nospaceoperators ...,..<
+--enable spaceAroundParens
+--enable spaceInsideBraces
+--enable spaceInsideBrackets
+--enable spaceInsideComments
+--enable spaceInsideGenerics
+--enable spaceInsideParens
+
+# redundance
+--enable redundantBackticks
+--enable redundantBreak
+--enable redundantExtensionACL
+--enable redundantFileprivate
+--enable redundantGet
+--enable redundantInit
+--enable redundantObjc
+--enable redundantParens
+--enable redundantPattern
+--enable redundantReturn
+--redundanttype inferred
+--enable redundantVoidReturnType
+
+# imports
+--importgrouping alphabetized
+--enable duplicateImports
+
+# indentation
+--indent 4
+--indentcase false
+--ifdef indent
+--xcodeindentation disabled
+
+# line breaks
+--linebreaks lf
+--enable linebreakAtEndOfFile
+
+# markTypes
+--markextensions always
+--typemark "MARK: - %t"
+--marktypes always
+--groupedextension "MARK: %c"
+
+# number formatting
+--decimalgrouping 3,6
+--binarygrouping 4,8
+--octalgrouping 4,8
+--hexgrouping 4,8
+--fractiongrouping disabled
+--exponentgrouping disabled
+--hexliteralcase lowercase
+--exponentcase uppercase
+
+# organizeDeclarations
+--categorymark "MARK: %c"
+
+--enable todos
+--trailingclosures 
+--enable trailingCommas
+--nevertrailing 
+--enable strongifiedSelf
+--enable strongOutlets
+--enable sortedSwitchCases
+--semicolons
+--enable andOperator
+--enable anyObjectProtocol
+--enable blankLinesAroundMark
+--enable blankLinesAtEndOfScope 
+--enable blankLinesAtStartOfScope
+--enable blankLinesBetweenScopes
+--allman false
+--elseposition next-line
+--guardelse next-line
+--enable consecutiveBlankLines
+--enable consecutiveSpaces
+--enable emptyBraces
+--enable enumNamespaces
+--header strip
+--patternlet hoist
+--enable initCoderUnavailable
+--enable isEmpty
+--enable leadingDelimiters
+--modifierorder
+--exclude Pods, Celly/Source/Services/Localization/L10n.swift, Celly/Source/Config/*.swift
+--commas always
+
+--assetliterals visual-width
+--beforemarks 
+--classthreshold 0
+--closingparen balanced
+--conflictmarkers reject
+--enumthreshold 0
+--extensionacl on-extension
+--extensionlength 0
+--extensionmark "MARK: - %t + %c"
+--fragment false
+--funcattributes prev-line
+--guardelse auto
+--lifecycle 
+--maxwidth 100
+--modifierorder 
+--nowrapoperators 
+--organizetypes class,enum,struct
+--self insert
+--selfrequired 
+--semicolons inline
+--shortoptionals always
+--smarttabs enabled
+--stripunusedargs always
+--structthreshold 0
+--tabwidth unspecified
+--trimwhitespace always
+--typeattributes prev-line
+--varattributes prev-line
+--voidtype void
+--wraparguments before-first
+--wrapcollections before-first
+--wrapconditions before-first
+--wrapparameters before-first
+--wrapreturntype preserve
+--yodaswap always
+--enable wrapEnumCases
+--enable wrapSwitchCases
+--enable wrapMultilineStatementBraces

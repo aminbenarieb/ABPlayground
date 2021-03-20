@@ -1,6 +1,6 @@
+import CoreGraphics
 import Foundation
 import os.log
-import CoreGraphics
 
 @available(iOS 10.0, *)
 public extension OSLog {
@@ -10,11 +10,11 @@ public extension OSLog {
         category: "tests"
     )
     #if CELLYDEV
-    static let corekit = OSLog(
-        subsystem: subsystem,
-        category: "corekit"
-    )
+        static let corekit = OSLog(
+            subsystem: subsystem,
+            category: "corekit"
+        )
     #else
-    static let corekit = OSLog.disabled
+        static let corekit = OSLog.disabled
     #endif
 }

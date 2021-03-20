@@ -1,5 +1,3 @@
-//: [Previous](@previous)
-
 import Foundation
 
 let semaphore = DispatchSemaphore(value: 1)
@@ -18,5 +16,5 @@ for i in 0..<10 {
         usleep(1000 * 1000 * 1)
         print("\(i): finished")
         semaphore.signal()
-}
+    }
 }

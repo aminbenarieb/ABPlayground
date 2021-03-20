@@ -1,8 +1,6 @@
-//: [Previous](@previous)
-
 /*:
-### Atomic accces
-*/
+ ### Atomic accces
+ */
 
 import Foundation
 import PlaygroundSupport
@@ -11,26 +9,28 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 let useLocks = true
 
-var counter : Int = 0
+var counter: Int = 0
 
-func incrementCounter(contextName:String) {
+func incrementCounter(contextName: String) {
     let originalCounterValue = counter
     counter = counter + 1
     if counter != originalCounterValue + 1 {
         fatalError("\(contextName):\(counter) Another caller got in here and stepped on our data! ")
-    } else {
+    }
+    else {
         print("\(contextName):\(counter) OK")
     }
 }
 
 let lockQueue = DispatchQueue(label: "lock")
 
-func callIncrement(name:String, useLock: Bool) {
+func callIncrement(name: String, useLock: Bool) {
     if useLock {
         lockQueue.async {
             incrementCounter(contextName: name)
         }
-    } else {
+    }
+    else {
         incrementCounter(contextName: name)
     }
 }

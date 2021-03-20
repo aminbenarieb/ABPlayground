@@ -1,10 +1,8 @@
-//: [Previous](@previous)
-
-import Foundation
 import Accelerate
+import Foundation
 
 // Shift from correlation matrix
-//for _ in 0..<1 {
+// for _ in 0..<1 {
 //    print("Reading...")
 //    let correlation: [Double] = try! Array<Double>.array_double(from: "python_real.txt", delimeter: "\n")
 //    let maxima = vDSP.indexOfMaximum(correlation)
@@ -21,11 +19,10 @@ import Accelerate
 //    }
 //    let point = CGPoint(x: xMaxima, y: yMaxima)
 //    print("Reading done")
-//}
-
+// }
 
 // Shift from complex correlation matrix
-//for _ in 0..<1 {
+// for _ in 0..<1 {
 //    print("Reading...")
 //    let file = "correlation_complex.txt"
 //    let delimeter = "\n"
@@ -66,8 +63,7 @@ import Accelerate
 //    }
 //    CGPoint(x: xMaxima, y: yMaxima)
 //    print("Reading done")
-//}
-
+// }
 
 // Shift from complex multiplication product
 for _ in 0..<1 {
@@ -75,7 +71,8 @@ for _ in 0..<1 {
     print("Reading...")
     let file = "mul_complex.txt"
     let delimeter = "\n"
-    var (realParts, imagParts) = try! Array<Double>.array_complex_double(from: file, delimeter: delimeter)
+    var (realParts, imagParts) = try! Array<Double>
+        .array_complex_double(from: file, delimeter: delimeter)
     var mul_complex_freq: DSPDoubleSplitComplex!
     realParts.withUnsafeMutableBufferPointer { realPtr in
         imagParts.withUnsafeMutableBufferPointer { imagPtr in
@@ -119,15 +116,15 @@ for _ in 0..<1 {
 //    let fftSetup = vDSP_create_fftsetupD(log2n, FFTRadix(kFFTRadix2))!
 //    withUnsafePointer(to: &mul_complex_freq) { mul_complex_freq_ptr in
 //        withUnsafeMutablePointer(to: &correlation_complex) { correlation_complex_ptr in
-////            vDSP_fft2d_zripD(
-////                <#T##__Setup: FFTSetupD##FFTSetupD#>,
-////                <#T##__C: UnsafePointer<DSPDoubleSplitComplex>##UnsafePointer<DSPDoubleSplitComplex>#>,
-////                <#T##__IC0: vDSP_Stride##vDSP_Stride#>,
-////                <#T##__IC1: vDSP_Stride##vDSP_Stride#>,
-////                <#T##__Log2N0: vDSP_Length##vDSP_Length#>,
-////                <#T##__Log2N1: vDSP_Length##vDSP_Length#>,
-////                <#T##__flag: FFTDirection##FFTDirection#>
-////            )
+    ////            vDSP_fft2d_zripD(
+    ////                <#T##__Setup: FFTSetupD##FFTSetupD#>,
+    ////                <#T##__C: UnsafePointer<DSPDoubleSplitComplex>##UnsafePointer<DSPDoubleSplitComplex>#>,
+    ////                <#T##__IC0: vDSP_Stride##vDSP_Stride#>,
+    ////                <#T##__IC1: vDSP_Stride##vDSP_Stride#>,
+    ////                <#T##__Log2N0: vDSP_Length##vDSP_Length#>,
+    ////                <#T##__Log2N1: vDSP_Length##vDSP_Length#>,
+    ////                <#T##__flag: FFTDirection##FFTDirection#>
+    ////            )
 //            vDSP_fft2d_zropD(
 //                fftSetup,
 //                mul_complex_freq_ptr, 2, 0,
@@ -139,9 +136,9 @@ for _ in 0..<1 {
 //        }
 //    }
     let fft2d = vDSP.FFT2D(
-    width: Int(size.width),
-    height: Int(size.height),
-    ofType: DSPDoubleSplitComplex.self
+        width: Int(size.width),
+        height: Int(size.height),
+        ofType: DSPDoubleSplitComplex.self
     )!
     fft2d.transform(
         input: mul_complex_freq,
@@ -180,6 +177,5 @@ for _ in 0..<1 {
     CGPoint(x: xMaxima, y: yMaxima)
     print("Reading done")
 }
-
 
 ////: [Next](@next)
