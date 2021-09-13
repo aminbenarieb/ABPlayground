@@ -8,5 +8,10 @@
         <page name='Array'/>
         <page name='Stride'/>
         <page name='FFT'/>
+        <page name='FFT_1D'/>
+        <page name='FFT_Doc'/>
+        <page name='Generics'/>
+        <page name='CopyOnWrite'/>
+        <page name='Dispatch'/>
     </pages>
 </playground>

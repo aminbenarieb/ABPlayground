@@ -1,16 +1,16 @@
 PODS:
-  - WKWebViewJavascriptBridge (1.2.0)
+  - lottie-ios (3.2.3)
 
 DEPENDENCIES:
-  - WKWebViewJavascriptBridge (~> 1.2.0)
+  - lottie-ios
 
 SPEC REPOS:
   trunk:
-    - WKWebViewJavascriptBridge
+    - lottie-ios
 
 SPEC CHECKSUMS:
-  WKWebViewJavascriptBridge: 43c5948c08c29b8777530d512d02eb921ca0881f
+  lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
 
-PODFILE CHECKSUM: 253e05bef0f454df39d76be4e4cfb013f64c1a90
+PODFILE CHECKSUM: 78c15b8d05bab73d04f5662320561385327d60db
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.11.0

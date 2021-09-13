@@ -1,0 +1,13 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'Playground' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  
+end
+
+
+pre_install do |installer|
+  raise "\n🚨  Do not launch 'pod install' manually, use `pod_builder` instead!\n" if !File.exist?('pod_builder.lock')
+end

@@ -1,0 +1,69 @@
+{
+  "project_name": "Playground",
+  "spec_overrides": {
+    "Google-Mobile-Ads-SDK": {
+      "module_name": "GoogleMobileAds"
+    },
+    "glog": {
+      "pod_target_xcconfig": {
+        "DEFINES_MODULE": "NO"
+      }
+    },
+    "DoubleConversion": {
+      "pod_target_xcconfig": {
+        "DEFINES_MODULE": "NO"
+      }
+    },
+    "Folly": {
+      "pod_target_xcconfig": {
+        "DEFINES_MODULE": "NO"
+      }
+    },
+    "Flipper-DoubleConversion": {
+      "pod_target_xcconfig": {
+        "DEFINES_MODULE": "NO"
+      }
+    },
+    "Flipper-Folly": {
+      "pod_target_xcconfig": {
+        "DEFINES_MODULE": "NO"
+      }
+    }
+  },
+  "skip_licenses": [
+
+  ],
+  "skip_pods": [
+    "GoogleMaps",
+    "React-RCTFabric",
+    "React-Core",
+    "React-CoreModules"
+  ],
+  "force_prebuild_pods": [
+
+  ],
+  "build_settings": {
+    "ENABLE_BITCODE": "NO",
+    "GCC_OPTIMIZATION_LEVEL": "s",
+    "SWIFT_OPTIMIZATION_LEVEL": "-Osize",
+    "SWIFT_COMPILATION_MODE": "wholemodule",
+    "CODE_SIGN_IDENTITY": "",
+    "CODE_SIGNING_REQUIRED": "NO",
+    "CODE_SIGN_ENTITLEMENTS": "",
+    "CODE_SIGNING_ALLOWED": "NO"
+  },
+  "build_settings_overrides": {
+    "SBTUITestTunnelClient": {
+      "ENABLE_BITCODE": "NO"
+    }
+  },
+  "build_system": "Latest",
+  "library_evolution_support": false,
+  "license_filename": "Pods-acknowledgements",
+  "restore_enabled": true,
+  "allow_building_development_pods": false,
+  "use_bundler": false,
+  "deterministic_build": false,
+  "build_using_repo_paths": false,
+  "react_native_project": false
+}

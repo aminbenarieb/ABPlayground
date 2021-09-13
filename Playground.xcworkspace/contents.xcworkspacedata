@@ -5,6 +5,12 @@
       location = "group:Playground.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:macOSPlayground/macOSPlayground.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ObjCPlaygroud/ObjCPlaygroud.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

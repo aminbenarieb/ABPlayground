@@ -1,0 +1,565 @@
+sil_stage raw
+
+import Builtin
+import Swift
+import SwiftShims
+
+import Foundation
+
+class Bird {
+  func favoriteBird() -> String
+  @objc func favoriteBirdObjc() -> String
+  @objc dynamic func favoriteBirdObjcAndDynamic() -> String
+  @objc deinit
+  init()
+}
+
+extension Bird {
+  @objc dynamic func someMethod() -> String
+}
+
+@_inheritsConvenienceInitializers class BirdChild : Bird {
+  override dynamic func someMethod() -> String
+  @objc deinit
+  override init()
+}
+
+@objc @_inheritsConvenienceInitializers class Animal : NSObject {
+  @objc func someAnimalMethod() -> String
+  @objc deinit
+  override dynamic init()
+}
+
+@_hasStorage @_hasInitialValue let birdObj: Bird { get }
+
+@_hasStorage @_hasInitialValue let birdChildObj: BirdChild { get }
+
+@_hasStorage @_hasInitialValue let animal: Animal { get }
+
+// birdObj
+sil_global hidden [let] @bird.birdObj : bird.Bird : $Bird
+
+// birdChildObj
+sil_global hidden [let] @bird.birdChildObj : bird.BirdChild : $BirdChild
+
+// animal
+sil_global hidden [let] @bird.animal : bird.Animal : $Animal
+
+// main
+sil [ossa] @main : $@convention(c) (Int32, UnsafeMutablePointer<Optional<UnsafeMutablePointer<Int8>>>) -> Int32 {
+bb0(%0 : $Int32, %1 : $UnsafeMutablePointer<Optional<UnsafeMutablePointer<Int8>>>):
+  alloc_global @bird.birdObj : bird.Bird           // id: %2
+  %3 = global_addr @bird.birdObj : bird.Bird : $*Bird // users: %18, %13, %8, %7
+  %4 = metatype $@thick Bird.Type                 // user: %6
+  // function_ref Bird.__allocating_init()
+  %5 = function_ref @bird.Bird.__allocating_init() -> bird.Bird : $@convention(method) (@thick Bird.Type) -> @owned Bird // user: %6
+  %6 = apply %5(%4) : $@convention(method) (@thick Bird.Type) -> @owned Bird // user: %7
+  store %6 to [init] %3 : $*Bird                  // id: %7
+  %8 = load_borrow %3 : $*Bird                    // users: %11, %10, %9
+  %9 = class_method %8 : $Bird, #Bird.favoriteBird : (Bird) -> () -> String, $@convention(method) (@guaranteed Bird) -> @owned String // user: %10
+  %10 = apply %9(%8) : $@convention(method) (@guaranteed Bird) -> @owned String // user: %12
+  end_borrow %8 : $Bird                           // id: %11
+  destroy_value %10 : $String                     // id: %12
+  %13 = load_borrow %3 : $*Bird                   // users: %16, %15, %14
+  %14 = class_method %13 : $Bird, #Bird.favoriteBirdObjc : (Bird) -> () -> String, $@convention(method) (@guaranteed Bird) -> @owned String // user: %15
+  %15 = apply %14(%13) : $@convention(method) (@guaranteed Bird) -> @owned String // user: %17
+  end_borrow %13 : $Bird                          // id: %16
+  destroy_value %15 : $String                     // id: %17
+  %18 = load_borrow %3 : $*Bird                   // users: %21, %20, %19
+  %19 = objc_method %18 : $Bird, #Bird.favoriteBirdObjcAndDynamic!foreign : (Bird) -> () -> String, $@convention(objc_method) (Bird) -> @autoreleased NSString // user: %20
+  %20 = apply %19(%18) : $@convention(objc_method) (Bird) -> @autoreleased NSString // user: %23
+  end_borrow %18 : $Bird                          // id: %21
+  // function_ref static String._unconditionallyBridgeFromObjectiveC(_:)
+  %22 = function_ref @static (extension in Foundation):Swift.String._unconditionallyBridgeFromObjectiveC(__C.NSString?) -> Swift.String : $@convention(method) (@guaranteed Optional<NSString>, @thin String.Type) -> @owned String // user: %25
+  %23 = enum $Optional<NSString>, #Optional.some!enumelt, %20 : $NSString // users: %27, %25
+  %24 = metatype $@thin String.Type               // user: %25
+  %25 = apply %22(%23, %24) : $@convention(method) (@guaranteed Optional<NSString>, @thin String.Type) -> @owned String // user: %26
+  destroy_value %25 : $String                     // id: %26
+  destroy_value %23 : $Optional<NSString>         // id: %27
+  alloc_global @bird.birdChildObj : bird.BirdChild   // id: %28
+  %29 = global_addr @bird.birdChildObj : bird.BirdChild : $*BirdChild // users: %40, %33
+  %30 = metatype $@thick BirdChild.Type           // user: %32
+  // function_ref BirdChild.__allocating_init()
+  %31 = function_ref @bird.BirdChild.__allocating_init() -> bird.BirdChild : $@convention(method) (@thick BirdChild.Type) -> @owned BirdChild // user: %32
+  %32 = apply %31(%30) : $@convention(method) (@thick BirdChild.Type) -> @owned BirdChild // user: %33
+  store %32 to [init] %29 : $*BirdChild           // id: %33
+  %34 = integer_literal $Builtin.Word, 1          // user: %36
+  // function_ref _allocateUninitializedArray<A>(_:)
+  %35 = function_ref @Swift._allocateUninitializedArray<A>(Builtin.Word) -> ([A], Builtin.RawPointer) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %36
+  %36 = apply %35<Any>(%34) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %37
+  (%37, %38) = destructure_tuple %36 : $(Array<Any>, Builtin.RawPointer) // users: %59, %56, %39
+  %39 = pointer_to_address %38 : $Builtin.RawPointer to [strict] $*Any // user: %48
+  %40 = load_borrow %29 : $*BirdChild             // users: %43, %42, %41
+  %41 = objc_method %40 : $BirdChild, #BirdChild.someMethod!foreign : (BirdChild) -> () -> String, $@convention(objc_method) (BirdChild) -> @autoreleased NSString // user: %42
+  %42 = apply %41(%40) : $@convention(objc_method) (BirdChild) -> @autoreleased NSString // user: %45
+  end_borrow %40 : $BirdChild                     // id: %43
+  // function_ref static String._unconditionallyBridgeFromObjectiveC(_:)
+  %44 = function_ref @static (extension in Foundation):Swift.String._unconditionallyBridgeFromObjectiveC(__C.NSString?) -> Swift.String : $@convention(method) (@guaranteed Optional<NSString>, @thin String.Type) -> @owned String // user: %47
+  %45 = enum $Optional<NSString>, #Optional.some!enumelt, %42 : $NSString // users: %50, %47
+  %46 = metatype $@thin String.Type               // user: %47
+  %47 = apply %44(%45, %46) : $@convention(method) (@guaranteed Optional<NSString>, @thin String.Type) -> @owned String // user: %49
+  %48 = init_existential_addr %39 : $*Any, $String // user: %49
+  store %47 to [init] %48 : $*String              // id: %49
+  destroy_value %45 : $Optional<NSString>         // id: %50
+  // function_ref default argument 1 of print(_:separator:terminator:)
+  %51 = function_ref @default argument 1 of Swift.print(_: Any..., separator: Swift.String, terminator: Swift.String) -> () : $@convention(thin) () -> @owned String // user: %52
+  %52 = apply %51() : $@convention(thin) () -> @owned String // users: %58, %56
+  // function_ref default argument 2 of print(_:separator:terminator:)
+  %53 = function_ref @default argument 2 of Swift.print(_: Any..., separator: Swift.String, terminator: Swift.String) -> () : $@convention(thin) () -> @owned String // user: %54
+  %54 = apply %53() : $@convention(thin) () -> @owned String // users: %57, %56
+  // function_ref print(_:separator:terminator:)
+  %55 = function_ref @Swift.print(_: Any..., separator: Swift.String, terminator: Swift.String) -> () : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> () // user: %56
+  %56 = apply %55(%37, %52, %54) : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+  destroy_value %54 : $String                     // id: %57
+  destroy_value %52 : $String                     // id: %58
+  destroy_value %37 : $Array<Any>                 // id: %59
+  alloc_global @bird.animal : bird.Animal        // id: %60
+  %61 = global_addr @bird.animal : bird.Animal : $*Animal // users: %72, %65
+  %62 = metatype $@thick Animal.Type              // user: %64
+  // function_ref Animal.__allocating_init()
+  %63 = function_ref @bird.Animal.__allocating_init() -> bird.Animal : $@convention(method) (@thick Animal.Type) -> @owned Animal // user: %64
+  %64 = apply %63(%62) : $@convention(method) (@thick Animal.Type) -> @owned Animal // user: %65
+  store %64 to [init] %61 : $*Animal              // id: %65
+  %66 = integer_literal $Builtin.Word, 1          // user: %68
+  // function_ref _allocateUninitializedArray<A>(_:)
+  %67 = function_ref @Swift._allocateUninitializedArray<A>(Builtin.Word) -> ([A], Builtin.RawPointer) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %68
+  %68 = apply %67<Any>(%66) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %69
+  (%69, %70) = destructure_tuple %68 : $(Array<Any>, Builtin.RawPointer) // users: %86, %83, %71
+  %71 = pointer_to_address %70 : $Builtin.RawPointer to [strict] $*Any // user: %76
+  %72 = load_borrow %61 : $*Animal                // users: %75, %74, %73
+  %73 = class_method %72 : $Animal, #Animal.someAnimalMethod : (Animal) -> () -> String, $@convention(method) (@guaranteed Animal) -> @owned String // user: %74
+  %74 = apply %73(%72) : $@convention(method) (@guaranteed Animal) -> @owned String // user: %77
+  end_borrow %72 : $Animal                        // id: %75
+  %76 = init_existential_addr %71 : $*Any, $String // user: %77
+  store %74 to [init] %76 : $*String              // id: %77
+  // function_ref default argument 1 of print(_:separator:terminator:)
+  %78 = function_ref @default argument 1 of Swift.print(_: Any..., separator: Swift.String, terminator: Swift.String) -> () : $@convention(thin) () -> @owned String // user: %79
+  %79 = apply %78() : $@convention(thin) () -> @owned String // users: %85, %83
+  // function_ref default argument 2 of print(_:separator:terminator:)
+  %80 = function_ref @default argument 2 of Swift.print(_: Any..., separator: Swift.String, terminator: Swift.String) -> () : $@convention(thin) () -> @owned String // user: %81
+  %81 = apply %80() : $@convention(thin) () -> @owned String // users: %84, %83
+  // function_ref print(_:separator:terminator:)
+  %82 = function_ref @Swift.print(_: Any..., separator: Swift.String, terminator: Swift.String) -> () : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> () // user: %83
+  %83 = apply %82(%69, %79, %81) : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+  destroy_value %81 : $String                     // id: %84
+  destroy_value %79 : $String                     // id: %85
+  destroy_value %69 : $Array<Any>                 // id: %86
+  %87 = integer_literal $Builtin.Int32, 0         // user: %88
+  %88 = struct $Int32 (%87 : $Builtin.Int32)      // user: %89
+  return %88 : $Int32                             // id: %89
+} // end sil function 'main'
+
+// Bird.favoriteBird()
+sil hidden [ossa] @bird.Bird.favoriteBird() -> Swift.String : $@convention(method) (@guaranteed Bird) -> @owned String {
+// %0 "self"                                      // user: %1
+bb0(%0 : @guaranteed $Bird):
+  debug_value %0 : $Bird, let, name "self", argno 1 // id: %1
+  %2 = string_literal utf8 "Sparrow"              // user: %7
+  %3 = integer_literal $Builtin.Word, 7           // user: %7
+  %4 = integer_literal $Builtin.Int1, -1          // user: %7
+  %5 = metatype $@thin String.Type                // user: %7
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %6 = function_ref @Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -> Swift.String : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %7
+  %7 = apply %6(%2, %3, %4, %5) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %8
+  return %7 : $String                             // id: %8
+} // end sil function 'bird.Bird.favoriteBird() -> Swift.String'
+
+// String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+sil [serialized] [always_inline] [readonly] [_semantics "string.makeUTF8"] @Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -> Swift.String : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String
+
+// Bird.favoriteBirdObjc()
+sil hidden [ossa] @bird.Bird.favoriteBirdObjc() -> Swift.String : $@convention(method) (@guaranteed Bird) -> @owned String {
+// %0 "self"                                      // user: %1
+bb0(%0 : @guaranteed $Bird):
+  debug_value %0 : $Bird, let, name "self", argno 1 // id: %1
+  %2 = string_literal utf8 "Sparrow"              // user: %7
+  %3 = integer_literal $Builtin.Word, 7           // user: %7
+  %4 = integer_literal $Builtin.Int1, -1          // user: %7
+  %5 = metatype $@thin String.Type                // user: %7
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %6 = function_ref @Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -> Swift.String : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %7
+  %7 = apply %6(%2, %3, %4, %5) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %8
+  return %7 : $String                             // id: %8
+} // end sil function 'bird.Bird.favoriteBirdObjc() -> Swift.String'
+
+// @objc Bird.favoriteBirdObjc()
+sil hidden [thunk] [ossa] @@objc bird.Bird.favoriteBirdObjc() -> Swift.String : $@convention(objc_method) (Bird) -> @autoreleased NSString {
+// %0                                             // user: %1
+bb0(%0 : @unowned $Bird):
+  %1 = copy_value %0 : $Bird                      // users: %6, %2
+  %2 = begin_borrow %1 : $Bird                    // users: %5, %4
+  // function_ref Bird.favoriteBirdObjc()
+  %3 = function_ref @bird.Bird.favoriteBirdObjc() -> Swift.String : $@convention(method) (@guaranteed Bird) -> @owned String // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@guaranteed Bird) -> @owned String // users: %11, %8
+  end_borrow %2 : $Bird                           // id: %5
+  destroy_value %1 : $Bird                        // id: %6
+  // function_ref String._bridgeToObjectiveC()
+  %7 = function_ref @(extension in Foundation):Swift.String._bridgeToObjectiveC() -> __C.NSString : $@convention(method) (@guaranteed String) -> @owned NSString // user: %9
+  %8 = begin_borrow %4 : $String                  // users: %10, %9
+  %9 = apply %7(%8) : $@convention(method) (@guaranteed String) -> @owned NSString // user: %12
+  end_borrow %8 : $String                         // id: %10
+  destroy_value %4 : $String                      // id: %11
+  return %9 : $NSString                           // id: %12
+} // end sil function '@objc bird.Bird.favoriteBirdObjc() -> Swift.String'
+
+// String._bridgeToObjectiveC()
+sil [_semantics "convertToObjectiveC"] @(extension in Foundation):Swift.String._bridgeToObjectiveC() -> __C.NSString : $@convention(method) (@guaranteed String) -> @owned NSString
+
+// Bird.favoriteBirdObjcAndDynamic()
+sil hidden [ossa] @bird.Bird.favoriteBirdObjcAndDynamic() -> Swift.String : $@convention(method) (@guaranteed Bird) -> @owned String {
+// %0 "self"                                      // user: %1
+bb0(%0 : @guaranteed $Bird):
+  debug_value %0 : $Bird, let, name "self", argno 1 // id: %1
+  %2 = string_literal utf8 "Sparrow"              // user: %7
+  %3 = integer_literal $Builtin.Word, 7           // user: %7
+  %4 = integer_literal $Builtin.Int1, -1          // user: %7
+  %5 = metatype $@thin String.Type                // user: %7
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %6 = function_ref @Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -> Swift.String : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %7
+  %7 = apply %6(%2, %3, %4, %5) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %8
+  return %7 : $String                             // id: %8
+} // end sil function 'bird.Bird.favoriteBirdObjcAndDynamic() -> Swift.String'
+
+// @objc Bird.favoriteBirdObjcAndDynamic()
+sil hidden [thunk] [ossa] @@objc bird.Bird.favoriteBirdObjcAndDynamic() -> Swift.String : $@convention(objc_method) (Bird) -> @autoreleased NSString {
+// %0                                             // user: %1
+bb0(%0 : @unowned $Bird):
+  %1 = copy_value %0 : $Bird                      // users: %6, %2
+  %2 = begin_borrow %1 : $Bird                    // users: %5, %4
+  // function_ref Bird.favoriteBirdObjcAndDynamic()
+  %3 = function_ref @bird.Bird.favoriteBirdObjcAndDynamic() -> Swift.String : $@convention(method) (@guaranteed Bird) -> @owned String // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@guaranteed Bird) -> @owned String // users: %11, %8
+  end_borrow %2 : $Bird                           // id: %5
+  destroy_value %1 : $Bird                        // id: %6
+  // function_ref String._bridgeToObjectiveC()
+  %7 = function_ref @(extension in Foundation):Swift.String._bridgeToObjectiveC() -> __C.NSString : $@convention(method) (@guaranteed String) -> @owned NSString // user: %9
+  %8 = begin_borrow %4 : $String                  // users: %10, %9
+  %9 = apply %7(%8) : $@convention(method) (@guaranteed String) -> @owned NSString // user: %12
+  end_borrow %8 : $String                         // id: %10
+  destroy_value %4 : $String                      // id: %11
+  return %9 : $NSString                           // id: %12
+} // end sil function '@objc bird.Bird.favoriteBirdObjcAndDynamic() -> Swift.String'
+
+// Bird.deinit
+sil hidden [ossa] @bird.Bird.deinit : $@convention(method) (@guaranteed Bird) -> @owned Builtin.NativeObject {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : @guaranteed $Bird):
+  debug_value %0 : $Bird, let, name "self", argno 1 // id: %1
+  %2 = unchecked_ref_cast %0 : $Bird to $Builtin.NativeObject // user: %3
+  %3 = unchecked_ownership_conversion %2 : $Builtin.NativeObject, @guaranteed to @owned // user: %4
+  return %3 : $Builtin.NativeObject               // id: %4
+} // end sil function 'bird.Bird.deinit'
+
+// Bird.__deallocating_deinit
+sil hidden [ossa] @bird.Bird.__deallocating_deinit : $@convention(method) (@owned Bird) -> () {
+// %0 "self"                                      // users: %6, %3, %1
+bb0(%0 : @owned $Bird):
+  debug_value %0 : $Bird, let, name "self", argno 1 // id: %1
+  // function_ref Bird.deinit
+  %2 = function_ref @bird.Bird.deinit : $@convention(method) (@guaranteed Bird) -> @owned Builtin.NativeObject // user: %4
+  %3 = begin_borrow %0 : $Bird                    // users: %5, %4
+  %4 = apply %2(%3) : $@convention(method) (@guaranteed Bird) -> @owned Builtin.NativeObject // user: %7
+  end_borrow %3 : $Bird                           // id: %5
+  end_lifetime %0 : $Bird                         // id: %6
+  %7 = unchecked_ref_cast %4 : $Builtin.NativeObject to $Bird // user: %8
+  dealloc_ref %7 : $Bird                          // id: %8
+  %9 = tuple ()                                   // user: %10
+  return %9 : $()                                 // id: %10
+} // end sil function 'bird.Bird.__deallocating_deinit'
+
+// Bird.__allocating_init()
+sil hidden [exact_self_class] [ossa] @bird.Bird.__allocating_init() -> bird.Bird : $@convention(method) (@thick Bird.Type) -> @owned Bird {
+// %0 "$metatype"
+bb0(%0 : $@thick Bird.Type):
+  %1 = alloc_ref $Bird                            // user: %3
+  // function_ref Bird.init()
+  %2 = function_ref @bird.Bird.init() -> bird.Bird : $@convention(method) (@owned Bird) -> @owned Bird // user: %3
+  %3 = apply %2(%1) : $@convention(method) (@owned Bird) -> @owned Bird // user: %4
+  return %3 : $Bird                               // id: %4
+} // end sil function 'bird.Bird.__allocating_init() -> bird.Bird'
+
+// Bird.init()
+sil hidden [ossa] @bird.Bird.init() -> bird.Bird : $@convention(method) (@owned Bird) -> @owned Bird {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : @owned $Bird):
+  debug_value %0 : $Bird, let, name "self", argno 1 // id: %1
+  %2 = mark_uninitialized [rootself] %0 : $Bird   // users: %4, %3
+  %3 = copy_value %2 : $Bird                      // user: %5
+  destroy_value %2 : $Bird                        // id: %4
+  return %3 : $Bird                               // id: %5
+} // end sil function 'bird.Bird.init() -> bird.Bird'
+
+// Bird.someMethod()
+sil hidden [ossa] @bird.Bird.someMethod() -> Swift.String : $@convention(method) (@guaranteed Bird) -> @owned String {
+// %0 "self"                                      // user: %1
+bb0(%0 : @guaranteed $Bird):
+  debug_value %0 : $Bird, let, name "self", argno 1 // id: %1
+  %2 = string_literal utf8 "Bird: some method"    // user: %7
+  %3 = integer_literal $Builtin.Word, 17          // user: %7
+  %4 = integer_literal $Builtin.Int1, -1          // user: %7
+  %5 = metatype $@thin String.Type                // user: %7
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %6 = function_ref @Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -> Swift.String : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %7
+  %7 = apply %6(%2, %3, %4, %5) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %8
+  return %7 : $String                             // id: %8
+} // end sil function 'bird.Bird.someMethod() -> Swift.String'
+
+// @objc Bird.someMethod()
+sil hidden [thunk] [ossa] @@objc bird.Bird.someMethod() -> Swift.String : $@convention(objc_method) (Bird) -> @autoreleased NSString {
+// %0                                             // user: %1
+bb0(%0 : @unowned $Bird):
+  %1 = copy_value %0 : $Bird                      // users: %6, %2
+  %2 = begin_borrow %1 : $Bird                    // users: %5, %4
+  // function_ref Bird.someMethod()
+  %3 = function_ref @bird.Bird.someMethod() -> Swift.String : $@convention(method) (@guaranteed Bird) -> @owned String // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@guaranteed Bird) -> @owned String // users: %11, %8
+  end_borrow %2 : $Bird                           // id: %5
+  destroy_value %1 : $Bird                        // id: %6
+  // function_ref String._bridgeToObjectiveC()
+  %7 = function_ref @(extension in Foundation):Swift.String._bridgeToObjectiveC() -> __C.NSString : $@convention(method) (@guaranteed String) -> @owned NSString // user: %9
+  %8 = begin_borrow %4 : $String                  // users: %10, %9
+  %9 = apply %7(%8) : $@convention(method) (@guaranteed String) -> @owned NSString // user: %12
+  end_borrow %8 : $String                         // id: %10
+  destroy_value %4 : $String                      // id: %11
+  return %9 : $NSString                           // id: %12
+} // end sil function '@objc bird.Bird.someMethod() -> Swift.String'
+
+// BirdChild.someMethod()
+sil hidden [ossa] @bird.BirdChild.someMethod() -> Swift.String : $@convention(method) (@guaranteed BirdChild) -> @owned String {
+// %0 "self"                                      // user: %1
+bb0(%0 : @guaranteed $BirdChild):
+  debug_value %0 : $BirdChild, let, name "self", argno 1 // id: %1
+  %2 = string_literal utf8 "BirdChild: some method" // user: %7
+  %3 = integer_literal $Builtin.Word, 22          // user: %7
+  %4 = integer_literal $Builtin.Int1, -1          // user: %7
+  %5 = metatype $@thin String.Type                // user: %7
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %6 = function_ref @Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -> Swift.String : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %7
+  %7 = apply %6(%2, %3, %4, %5) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %8
+  return %7 : $String                             // id: %8
+} // end sil function 'bird.BirdChild.someMethod() -> Swift.String'
+
+// @objc BirdChild.someMethod()
+sil hidden [thunk] [ossa] @@objc bird.BirdChild.someMethod() -> Swift.String : $@convention(objc_method) (BirdChild) -> @autoreleased NSString {
+// %0                                             // user: %1
+bb0(%0 : @unowned $BirdChild):
+  %1 = copy_value %0 : $BirdChild                 // users: %6, %2
+  %2 = begin_borrow %1 : $BirdChild               // users: %5, %4
+  // function_ref BirdChild.someMethod()
+  %3 = function_ref @bird.BirdChild.someMethod() -> Swift.String : $@convention(method) (@guaranteed BirdChild) -> @owned String // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@guaranteed BirdChild) -> @owned String // users: %11, %8
+  end_borrow %2 : $BirdChild                      // id: %5
+  destroy_value %1 : $BirdChild                   // id: %6
+  // function_ref String._bridgeToObjectiveC()
+  %7 = function_ref @(extension in Foundation):Swift.String._bridgeToObjectiveC() -> __C.NSString : $@convention(method) (@guaranteed String) -> @owned NSString // user: %9
+  %8 = begin_borrow %4 : $String                  // users: %10, %9
+  %9 = apply %7(%8) : $@convention(method) (@guaranteed String) -> @owned NSString // user: %12
+  end_borrow %8 : $String                         // id: %10
+  destroy_value %4 : $String                      // id: %11
+  return %9 : $NSString                           // id: %12
+} // end sil function '@objc bird.BirdChild.someMethod() -> Swift.String'
+
+// BirdChild.deinit
+sil hidden [ossa] @bird.BirdChild.deinit : $@convention(method) (@guaranteed BirdChild) -> @owned Builtin.NativeObject {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : @guaranteed $BirdChild):
+  debug_value %0 : $BirdChild, let, name "self", argno 1 // id: %1
+  %2 = upcast %0 : $BirdChild to $Bird            // user: %4
+  // function_ref Bird.deinit
+  %3 = function_ref @bird.Bird.deinit : $@convention(method) (@guaranteed Bird) -> @owned Builtin.NativeObject // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@guaranteed Bird) -> @owned Builtin.NativeObject // users: %8, %5
+  %5 = begin_borrow %4 : $Builtin.NativeObject    // users: %7, %6
+  %6 = unchecked_ref_cast %5 : $Builtin.NativeObject to $BirdChild
+  end_borrow %5 : $Builtin.NativeObject           // id: %7
+  return %4 : $Builtin.NativeObject               // id: %8
+} // end sil function 'bird.BirdChild.deinit'
+
+// BirdChild.__deallocating_deinit
+sil hidden [ossa] @bird.BirdChild.__deallocating_deinit : $@convention(method) (@owned BirdChild) -> () {
+// %0 "self"                                      // users: %6, %3, %1
+bb0(%0 : @owned $BirdChild):
+  debug_value %0 : $BirdChild, let, name "self", argno 1 // id: %1
+  // function_ref BirdChild.deinit
+  %2 = function_ref @bird.BirdChild.deinit : $@convention(method) (@guaranteed BirdChild) -> @owned Builtin.NativeObject // user: %4
+  %3 = begin_borrow %0 : $BirdChild               // users: %5, %4
+  %4 = apply %2(%3) : $@convention(method) (@guaranteed BirdChild) -> @owned Builtin.NativeObject // user: %7
+  end_borrow %3 : $BirdChild                      // id: %5
+  end_lifetime %0 : $BirdChild                    // id: %6
+  %7 = unchecked_ref_cast %4 : $Builtin.NativeObject to $BirdChild // user: %8
+  dealloc_ref %7 : $BirdChild                     // id: %8
+  %9 = tuple ()                                   // user: %10
+  return %9 : $()                                 // id: %10
+} // end sil function 'bird.BirdChild.__deallocating_deinit'
+
+// BirdChild.__allocating_init()
+sil hidden [exact_self_class] [ossa] @bird.BirdChild.__allocating_init() -> bird.BirdChild : $@convention(method) (@thick BirdChild.Type) -> @owned BirdChild {
+// %0 "$metatype"
+bb0(%0 : $@thick BirdChild.Type):
+  %1 = alloc_ref $BirdChild                       // user: %3
+  // function_ref BirdChild.init()
+  %2 = function_ref @bird.BirdChild.init() -> bird.BirdChild : $@convention(method) (@owned BirdChild) -> @owned BirdChild // user: %3
+  %3 = apply %2(%1) : $@convention(method) (@owned BirdChild) -> @owned BirdChild // user: %4
+  return %3 : $BirdChild                          // id: %4
+} // end sil function 'bird.BirdChild.__allocating_init() -> bird.BirdChild'
+
+// BirdChild.init()
+sil hidden [ossa] @bird.BirdChild.init() -> bird.BirdChild : $@convention(method) (@owned BirdChild) -> @owned BirdChild {
+// %0 "self"                                      // user: %4
+bb0(%0 : @owned $BirdChild):
+  %1 = alloc_box ${ var BirdChild }, let, name "self" // user: %2
+  %2 = mark_uninitialized [derivedself] %1 : ${ var BirdChild } // users: %12, %3
+  %3 = project_box %2 : ${ var BirdChild }, 0     // users: %11, %10, %5, %4
+  store %0 to [init] %3 : $*BirdChild             // id: %4
+  %5 = load [take] %3 : $*BirdChild               // user: %6
+  %6 = upcast %5 : $BirdChild to $Bird            // user: %8
+  // function_ref Bird.init()
+  %7 = function_ref @bird.Bird.init() -> bird.Bird : $@convention(method) (@owned Bird) -> @owned Bird // user: %8
+  %8 = apply %7(%6) : $@convention(method) (@owned Bird) -> @owned Bird // user: %9
+  %9 = unchecked_ref_cast %8 : $Bird to $BirdChild // user: %10
+  store %9 to [init] %3 : $*BirdChild             // id: %10
+  %11 = load [copy] %3 : $*BirdChild              // user: %13
+  destroy_value %2 : ${ var BirdChild }           // id: %12
+  return %11 : $BirdChild                         // id: %13
+} // end sil function 'bird.BirdChild.init() -> bird.BirdChild'
+
+// Animal.someAnimalMethod()
+sil hidden [ossa] @bird.Animal.someAnimalMethod() -> Swift.String : $@convention(method) (@guaranteed Animal) -> @owned String {
+// %0 "self"                                      // user: %1
+bb0(%0 : @guaranteed $Animal):
+  debug_value %0 : $Animal, let, name "self", argno 1 // id: %1
+  %2 = string_literal utf8 "Some string"          // user: %7
+  %3 = integer_literal $Builtin.Word, 11          // user: %7
+  %4 = integer_literal $Builtin.Int1, -1          // user: %7
+  %5 = metatype $@thin String.Type                // user: %7
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %6 = function_ref @Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -> Swift.String : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %7
+  %7 = apply %6(%2, %3, %4, %5) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %8
+  return %7 : $String                             // id: %8
+} // end sil function 'bird.Animal.someAnimalMethod() -> Swift.String'
+
+// @objc Animal.someAnimalMethod()
+sil hidden [thunk] [ossa] @@objc bird.Animal.someAnimalMethod() -> Swift.String : $@convention(objc_method) (Animal) -> @autoreleased NSString {
+// %0                                             // user: %1
+bb0(%0 : @unowned $Animal):
+  %1 = copy_value %0 : $Animal                    // users: %6, %2
+  %2 = begin_borrow %1 : $Animal                  // users: %5, %4
+  // function_ref Animal.someAnimalMethod()
+  %3 = function_ref @bird.Animal.someAnimalMethod() -> Swift.String : $@convention(method) (@guaranteed Animal) -> @owned String // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@guaranteed Animal) -> @owned String // users: %11, %8
+  end_borrow %2 : $Animal                         // id: %5
+  destroy_value %1 : $Animal                      // id: %6
+  // function_ref String._bridgeToObjectiveC()
+  %7 = function_ref @(extension in Foundation):Swift.String._bridgeToObjectiveC() -> __C.NSString : $@convention(method) (@guaranteed String) -> @owned NSString // user: %9
+  %8 = begin_borrow %4 : $String                  // users: %10, %9
+  %9 = apply %7(%8) : $@convention(method) (@guaranteed String) -> @owned NSString // user: %12
+  end_borrow %8 : $String                         // id: %10
+  destroy_value %4 : $String                      // id: %11
+  return %9 : $NSString                           // id: %12
+} // end sil function '@objc bird.Animal.someAnimalMethod() -> Swift.String'
+
+// Animal.__deallocating_deinit
+sil hidden [ossa] @bird.Animal.__deallocating_deinit : $@convention(method) (@owned Animal) -> () {
+// %0 "self"                                      // users: %3, %2, %1
+bb0(%0 : @owned $Animal):
+  debug_value %0 : $Animal, let, name "self", argno 1 // id: %1
+  %2 = objc_super_method %0 : $Animal, #NSObject.deinit!deallocator.foreign : (NSObject) -> () -> (), $@convention(objc_method) (NSObject) -> () // user: %4
+  %3 = upcast %0 : $Animal to $NSObject           // users: %5, %4
+  %4 = apply %2(%3) : $@convention(objc_method) (NSObject) -> ()
+  end_lifetime %3 : $NSObject                     // id: %5
+  %6 = tuple ()                                   // user: %7
+  return %6 : $()                                 // id: %7
+} // end sil function 'bird.Animal.__deallocating_deinit'
+
+// Animal.__allocating_init()
+sil hidden [ossa] @bird.Animal.__allocating_init() -> bird.Animal : $@convention(method) (@thick Animal.Type) -> @owned Animal {
+// %0 "$metatype"                                 // user: %1
+bb0(%0 : $@thick Animal.Type):
+  %1 = thick_to_objc_metatype %0 : $@thick Animal.Type to $@objc_metatype Animal.Type // user: %2
+  %2 = alloc_ref_dynamic [objc] %1 : $@objc_metatype Animal.Type, $Animal // user: %4
+  // function_ref dynamic Animal.init()
+  %3 = function_ref @dynamic bird.Animal.init() -> bird.Animal : $@convention(method) (@owned Animal) -> @owned Animal // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@owned Animal) -> @owned Animal // user: %5
+  return %4 : $Animal                             // id: %5
+} // end sil function 'bird.Animal.__allocating_init() -> bird.Animal'
+
+// dynamic Animal.init()
+sil shared [transparent] [serializable] [thunk] [ossa] @dynamic bird.Animal.init() -> bird.Animal : $@convention(method) (@owned Animal) -> @owned Animal {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : @owned $Animal):
+  %1 = objc_method %0 : $Animal, #Animal.init!initializer.foreign : (Animal.Type) -> () -> Animal, $@convention(objc_method) (@owned Animal) -> @owned Animal // user: %2
+  %2 = apply %1(%0) : $@convention(objc_method) (@owned Animal) -> @owned Animal // user: %3
+  return %2 : $Animal                             // id: %3
+} // end sil function 'dynamic bird.Animal.init() -> bird.Animal'
+
+// Animal.init()
+sil hidden [ossa] @bird.Animal.init() -> bird.Animal : $@convention(method) (@owned Animal) -> @owned Animal {
+// %0 "self"                                      // user: %4
+bb0(%0 : @owned $Animal):
+  %1 = alloc_box ${ var Animal }, let, name "self" // user: %2
+  %2 = mark_uninitialized [derivedself] %1 : ${ var Animal } // users: %15, %3
+  %3 = project_box %2 : ${ var Animal }, 0        // users: %14, %13, %5, %4
+  store %0 to [init] %3 : $*Animal                // id: %4
+  %5 = load [take] %3 : $*Animal                  // user: %6
+  %6 = upcast %5 : $Animal to $NSObject           // users: %11, %7
+  %7 = begin_borrow %6 : $NSObject                // users: %10, %8
+  %8 = unchecked_ref_cast %7 : $NSObject to $Animal // user: %9
+  %9 = objc_super_method %8 : $Animal, #NSObject.init!initializer.foreign : (NSObject.Type) -> () -> NSObject, $@convention(objc_method) (@owned NSObject) -> @owned NSObject // user: %11
+  end_borrow %7 : $NSObject                       // id: %10
+  %11 = apply %9(%6) : $@convention(objc_method) (@owned NSObject) -> @owned NSObject // user: %12
+  %12 = unchecked_ref_cast %11 : $NSObject to $Animal // user: %13
+  store %12 to [init] %3 : $*Animal               // id: %13
+  %14 = load [copy] %3 : $*Animal                 // user: %16
+  destroy_value %2 : ${ var Animal }              // id: %15
+  return %14 : $Animal                            // id: %16
+} // end sil function 'bird.Animal.init() -> bird.Animal'
+
+// @objc Animal.init()
+sil hidden [thunk] [ossa] @@objc bird.Animal.init() -> bird.Animal : $@convention(objc_method) (@owned Animal) -> @owned Animal {
+// %0                                             // user: %2
+bb0(%0 : @owned $Animal):
+  // function_ref Animal.init()
+  %1 = function_ref @bird.Animal.init() -> bird.Animal : $@convention(method) (@owned Animal) -> @owned Animal // user: %2
+  %2 = apply %1(%0) : $@convention(method) (@owned Animal) -> @owned Animal // user: %3
+  return %2 : $Animal                             // id: %3
+} // end sil function '@objc bird.Animal.init() -> bird.Animal'
+
+// static String._unconditionallyBridgeFromObjectiveC(_:)
+sil [readonly] @static (extension in Foundation):Swift.String._unconditionallyBridgeFromObjectiveC(__C.NSString?) -> Swift.String : $@convention(method) (@guaranteed Optional<NSString>, @thin String.Type) -> @owned String
+
+// _allocateUninitializedArray<A>(_:)
+sil [serialized] [always_inline] [_semantics "array.uninitialized_intrinsic"] @Swift._allocateUninitializedArray<A>(Builtin.Word) -> ([A], Builtin.RawPointer) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer)
+
+// default argument 1 of print(_:separator:terminator:)
+sil hidden_external [serialized] @default argument 1 of Swift.print(_: Any..., separator: Swift.String, terminator: Swift.String) -> () : $@convention(thin) () -> @owned String
+
+// default argument 2 of print(_:separator:terminator:)
+sil hidden_external [serialized] @default argument 2 of Swift.print(_: Any..., separator: Swift.String, terminator: Swift.String) -> () : $@convention(thin) () -> @owned String
+
+// print(_:separator:terminator:)
+sil @Swift.print(_: Any..., separator: Swift.String, terminator: Swift.String) -> () : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+
+sil_vtable Bird {
+  #Bird.favoriteBird: (Bird) -> () -> String : @bird.Bird.favoriteBird() -> Swift.String	// Bird.favoriteBird()
+  #Bird.favoriteBirdObjc: (Bird) -> () -> String : @bird.Bird.favoriteBirdObjc() -> Swift.String	// Bird.favoriteBirdObjc()
+  #Bird.init!allocator: (Bird.Type) -> () -> Bird : @bird.Bird.__allocating_init() -> bird.Bird	// Bird.__allocating_init()
+  #Bird.deinit!deallocator: @bird.Bird.__deallocating_deinit	// Bird.__deallocating_deinit
+}
+
+sil_vtable BirdChild {
+  #Bird.favoriteBird: (Bird) -> () -> String : @bird.Bird.favoriteBird() -> Swift.String [inherited]	// Bird.favoriteBird()
+  #Bird.favoriteBirdObjc: (Bird) -> () -> String : @bird.Bird.favoriteBirdObjc() -> Swift.String [inherited]	// Bird.favoriteBirdObjc()
+  #Bird.init!allocator: (Bird.Type) -> () -> Bird : @bird.BirdChild.__allocating_init() -> bird.BirdChild [override]	// BirdChild.__allocating_init()
+  #BirdChild.deinit!deallocator: @bird.BirdChild.__deallocating_deinit	// BirdChild.__deallocating_deinit
+}
+
+sil_vtable Animal {
+  #Animal.someAnimalMethod: (Animal) -> () -> String : @bird.Animal.someAnimalMethod() -> Swift.String	// Animal.someAnimalMethod()
+  #Animal.deinit!deallocator: @bird.Animal.__deallocating_deinit	// Animal.__deallocating_deinit
+}
+
+
+
+// Mappings from '#fileID' to '#filePath':
+//   'bird/bird.swift' => 'bird.swift'
+
+
