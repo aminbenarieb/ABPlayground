@@ -257,6 +257,12 @@ extension ScrollViewViewController: UIScrollViewDelegate {
 //        }
         
         /// CABasicAnimation
+        CATransaction.begin()
+        CATransaction.setCompletionBlock { [weak self] in
+            let bottomOffset = CGPoint(x: 0, y: self!.scrollView.contentSize.height - self!.scrollView.bounds.size.height)
+            self?.scrollView.setContentOffset(bottomOffset, animated: false)
+            self?.stackView.layer.removeAnimation(forKey: "scrollAnimation")
+        }
         let animation = CABasicAnimation(keyPath: "transform.translation.y")
         animation.fromValue = 0
         animation.toValue = -self.stackView.frame.height * 0.3
@@ -264,10 +270,10 @@ extension ScrollViewViewController: UIScrollViewDelegate {
         animation.isRemovedOnCompletion = false
         animation.fillMode = .forwards;
         animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        self.stackView.layer.add(animation, forKey: nil)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.stackView.layer.removeAllAnimations()
-        }
+        self.stackView.layer.add(animation, forKey: "scrollAnimation")
+        CATransaction.commit()
+        
+        
         //rectangle.layer.position = CGPointMake(150, 0);
         
         /// UIView.animation: CGAffineTransform
