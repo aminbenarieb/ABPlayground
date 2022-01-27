@@ -53,7 +53,6 @@ class ScrollViewViewController: UIViewController {
     
     private var topView: UIView!
     private var bottomView: UIView!
-    private var needsToAnimated = false
     
     private let scrollView = UIScrollView()
     private var scrollDirection: ScrollDirection = .none
@@ -86,29 +85,6 @@ class ScrollViewViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        guard !needsToAnimated else { return }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-            self.needsToAnimated = true
-            // initial
-//            let containerValue = self.scrollView.frame.height
-//            let topViewOriginY = self.view.convert(self.topView.frame.origin, from: self.stackView).y
-//            let topViewValue = topViewOriginY + self.topView.frame.height
-//            let diff  = containerValue - topViewValue
-            let intersection = self.bottomView.frame.intersection(self.scrollView.frame)
-            let diff = intersection.height
-            self.stackView.setCustomSpacing(diff, after: self.topView)
-            print(String(format: "diff (expected): %0.1lf", 106.5))
-            print(String(format: "diff (got): %0.1lf", diff))
-
-            // animation
-//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                UIView.animate(withDuration: 0.3, delay: 0,options: UIView.AnimationOptions.curveEaseInOut) {
-                    self.stackView.setCustomSpacing(0, after: self.topView)
-                    self.bottomView.alpha = 1
-                }
-//            })
-        })
     }
     
     // MARK: -
@@ -145,7 +121,6 @@ class ScrollViewViewController: UIViewController {
             return stubView
         }
         
-        needsToAnimated = false
         let arrangedSubviews = stackView.arrangedSubviews
         for arrangedSubview in arrangedSubviews {
             stackView.removeArrangedSubview(arrangedSubview)
@@ -154,6 +129,10 @@ class ScrollViewViewController: UIViewController {
         topView = add(CGSize(width: view.frame.width, height: view.frame.height*0.7))
         bottomView = add(CGSize(width: view.frame.width, height: view.frame.height*1.5))
         self.bottomView.alpha = 0
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+            self.targetAction2()
+        })
     }
     
     // MARK: Motion shake (refresh action)
@@ -288,6 +267,45 @@ extension ScrollViewViewController: UIScrollViewDelegate {
     func targetCondition() -> Bool {
         let diff = scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.height)
         return scrollDirection == .bottom && diff < -100
+    }
+    
+    func targetAction2() {
+        // initial
+        let intersection = self.bottomView.frame.intersection(self.scrollView.frame)
+        let diff = intersection.height
+        print(String(format: "diff (expected): %0.1lf", 106.5))
+        print(String(format: "diff (got): %0.1lf", diff))
+
+        /// UIView.animation
+//        self.stackView.setCustomSpacing(diff, after: self.topView)
+//        UIView.animate(withDuration: 0.3, delay: 0,options: UIView.AnimationOptions.curveEaseInOut) {
+//            self.stackView.setCustomSpacing(0, after: self.topView)
+//            self.bottomView.alpha = 1
+//        }
+        
+        /// CABasicAnimation
+        CATransaction.begin()
+        CATransaction.setCompletionBlock { [weak self] in
+            self?.bottomView.alpha = 1
+            self?.bottomView.layer.removeAnimation(forKey: "scroll2Animation")
+        }
+        let groupAnimation = CAAnimationGroup()
+        groupAnimation.duration = 1
+        groupAnimation.isRemovedOnCompletion = false
+        groupAnimation.fillMode = .forwards
+        groupAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        
+        let translationAnimation = CABasicAnimation(keyPath: "transform.translation.y")
+        translationAnimation.fromValue = diff
+        translationAnimation.toValue = 0
+        
+        let fadeAnimation = CABasicAnimation(keyPath: "opacity")
+        fadeAnimation.fromValue = 0
+        fadeAnimation.toValue = 1
+        
+        groupAnimation.animations = [translationAnimation, fadeAnimation]
+        bottomView.layer.add(groupAnimation, forKey: "scroll2Animation")
+        CATransaction.commit()
     }
     
 }
