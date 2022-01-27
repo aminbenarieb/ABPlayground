@@ -1,16 +1,33 @@
 PODS:
   - lottie-ios (3.2.3)
+  - NSLogger (1.9.7):
+    - NSLogger/ObjC (= 1.9.7)
+  - NSLogger/ObjC (1.9.7)
+  - NSLogger/Swift (1.9.7):
+    - NSLogger/ObjC
+  - RxSwift (6.2.0)
+  - SnapKit (5.0.1)
 
 DEPENDENCIES:
   - lottie-ios
+  - NSLogger
+  - NSLogger/Swift
+  - RxSwift
+  - SnapKit
 
 SPEC REPOS:
   trunk:
     - lottie-ios
+    - NSLogger
+    - RxSwift
+    - SnapKit
 
 SPEC CHECKSUMS:
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
+  NSLogger: cf3013a4fba189f631f07e6c3d5b8ce2b209654b
+  RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: 78c15b8d05bab73d04f5662320561385327d60db
+PODFILE CHECKSUM: e5ca869040488dcc72c9bc061c11690fb62516b0
 
-COCOAPODS: 1.11.0
+COCOAPODS: 1.11.2
