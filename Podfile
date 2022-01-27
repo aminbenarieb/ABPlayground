@@ -6,4 +6,6 @@ target 'Playground' do
   use_frameworks!
   pod 'lottie-ios'
   
+  pod "NSLogger"
+  pod "NSLogger/Swift"
 end
