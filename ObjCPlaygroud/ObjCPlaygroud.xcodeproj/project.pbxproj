@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		FCD4DEF426EBE64900CF3F1F /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCD4DEF326EBE64900CF3F1F /* main.mm */; };
-		FCD4DEFC26EBE65C00CF3F1F /* pose_graph_example.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCD4DEFB26EBE65C00CF3F1F /* pose_graph_example.cpp */; };
-		FCD4DF3526EC8FC700CF3F1F /* libminisam.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FCD4DF3426EC8FC700CF3F1F /* libminisam.dylib */; };
-		FCD4DF3B26EC92E000CF3F1F /* libminisam.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = FCD4DF3426EC8FC700CF3F1F /* libminisam.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FCD4DF4526EC994500CF3F1F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD4DF4426EC994500CF3F1F /* AppDelegate.m */; };
 		FCD4DF4826EC994500CF3F1F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD4DF4726EC994500CF3F1F /* SceneDelegate.m */; };
 		FCD4DF4B26EC994500CF3F1F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD4DF4A26EC994500CF3F1F /* ViewController.m */; };
@@ -23,16 +20,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		FCD4DEEE26EBE64900CF3F1F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-				FCD4DF3B26EC92E000CF3F1F /* libminisam.dylib in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
 		FCD4DF0F26EC6D1E00CF3F1F /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -82,7 +69,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FCD4DF3526EC8FC700CF3F1F /* libminisam.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +148,6 @@
 			buildPhases = (
 				FCD4DEEC26EBE64900CF3F1F /* Sources */,
 				FCD4DEED26EBE64900CF3F1F /* Frameworks */,
-				FCD4DEEE26EBE64900CF3F1F /* CopyFiles */,
 				FCD4DF0F26EC6D1E00CF3F1F /* Embed Libraries */,
 			);
 			buildRules = (
@@ -245,7 +230,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FCD4DEFC26EBE65C00CF3F1F /* pose_graph_example.cpp in Sources */,
 				FCD4DEF426EBE64900CF3F1F /* main.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -401,14 +385,10 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_ENTITLEMENTS = ObjCPlaygroud/ObjCPlaygroud.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZM22BPNAY9;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = (
-					/opt/local/include,
-					/opt/local/include/eigen3,
-					/Users/aminbenarieb/repo/minisam/,
-				);
-				LIBRARY_SEARCH_PATHS = /Users/aminbenarieb/repo/minisam/build/minisam;
+				HEADER_SEARCH_PATHS = /opt/local/include;
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -420,14 +400,10 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_ENTITLEMENTS = ObjCPlaygroud/ObjCPlaygroud.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZM22BPNAY9;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = (
-					/opt/local/include,
-					/opt/local/include/eigen3,
-					/Users/aminbenarieb/repo/minisam/,
-				);
-				LIBRARY_SEARCH_PATHS = /Users/aminbenarieb/repo/minisam/build/minisam;
+				HEADER_SEARCH_PATHS = /opt/local/include;
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
