@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		25DD817D7C22031D3C29A472 /* Pods_Playground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93892A38AED12C8B5A5AD31 /* Pods_Playground.framework */; };
+		AD4C04262781ED1A00BCFF52 /* RxSwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4C04252781ED1A00BCFF52 /* RxSwiftViewController.swift */; };
+		AD613DE22784891900D9DE4C /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD613DE12784891900D9DE4C /* AudioViewController.swift */; };
+		AD8253AE279FFE1700152D88 /* ScrollViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8253AD279FFE1700152D88 /* ScrollViewViewController.swift */; };
 		FCB54C0D26EA8DEA00A6A7DC /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB54C0C26EA8DEA00A6A7DC /* LottieViewController.swift */; };
 		FCB54C1126EA8E2B00A6A7DC /* CoreAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB54C1026EA8E2B00A6A7DC /* CoreAnimationViewController.swift */; };
 		FCB54C9126EA933200A6A7DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB54C9026EA933200A6A7DC /* SceneDelegate.swift */; };
@@ -21,6 +24,9 @@
 /* Begin PBXFileReference section */
 		006525D60C1DD03B73102FA0 /* Pods-Playground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Playground.release.xcconfig"; path = "Target Support Files/Pods-Playground/Pods-Playground.release.xcconfig"; sourceTree = "<group>"; };
 		4F00419593B56B9556161FC1 /* Pods-Playground.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Playground.debug.xcconfig"; path = "Target Support Files/Pods-Playground/Pods-Playground.debug.xcconfig"; sourceTree = "<group>"; };
+		AD4C04252781ED1A00BCFF52 /* RxSwiftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxSwiftViewController.swift; sourceTree = "<group>"; };
+		AD613DE12784891900D9DE4C /* AudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
+		AD8253AD279FFE1700152D88 /* ScrollViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewViewController.swift; sourceTree = "<group>"; };
 		C93892A38AED12C8B5A5AD31 /* Pods_Playground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Playground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCB54C0C26EA8DEA00A6A7DC /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
 		FCB54C1026EA8E2B00A6A7DC /* CoreAnimationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAnimationViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +103,9 @@
 				FCB87481238BB6D800A538F3 /* MVVMViewController.swift */,
 				FCB54C0C26EA8DEA00A6A7DC /* LottieViewController.swift */,
 				FCB54C1026EA8E2B00A6A7DC /* CoreAnimationViewController.swift */,
+				AD8253AD279FFE1700152D88 /* ScrollViewViewController.swift */,
+				AD4C04252781ED1A00BCFF52 /* RxSwiftViewController.swift */,
+				AD613DE12784891900D9DE4C /* AudioViewController.swift */,
 				FCB87486238BB6DB00A538F3 /* Assets.xcassets */,
 				FCB87488238BB6DB00A538F3 /* LaunchScreen.storyboard */,
 				FCB8748B238BB6DB00A538F3 /* Info.plist */,
@@ -222,8 +231,11 @@
 			files = (
 				FCB54C9126EA933200A6A7DC /* SceneDelegate.swift in Sources */,
 				FCB87482238BB6D800A538F3 /* MVVMViewController.swift in Sources */,
+				AD8253AE279FFE1700152D88 /* ScrollViewViewController.swift in Sources */,
+				AD4C04262781ED1A00BCFF52 /* RxSwiftViewController.swift in Sources */,
 				FCB54C0D26EA8DEA00A6A7DC /* LottieViewController.swift in Sources */,
 				FCB8747E238BB6D800A538F3 /* AppDelegate.swift in Sources */,
+				AD613DE22784891900D9DE4C /* AudioViewController.swift in Sources */,
 				FCB54C1126EA8E2B00A6A7DC /* CoreAnimationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
