@@ -13,5 +13,7 @@
         <page name='Generics'/>
         <page name='CopyOnWrite'/>
         <page name='Dispatch'/>
+        <page name='Logging'/>
+        <page name='BottomToastBanner'/>
     </pages>
 </playground>

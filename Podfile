@@ -9,4 +9,5 @@ target 'Playground' do
   pod "NSLogger/Swift"
   pod "RxSwift"
   pod "SnapKit"
+  pod 'TensorFlowLiteSwift', :subspecs => ['CoreML']
 end

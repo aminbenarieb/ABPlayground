@@ -8,7 +8,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         window = UIWindow(windowScene: scene as! UIWindowScene)
         window?.frame = UIScreen.main.bounds
-        window?.rootViewController = ScrollViewViewControllerAssembly().create()
+        window?.rootViewController = ScrollViewControllerBottomToastToBottomAssembly().create()
         window?.makeKeyAndVisible()
     }
 }
